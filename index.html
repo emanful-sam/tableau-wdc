@@ -27,7 +27,7 @@
             };
 
             myConnector.getData = function(table, doneCallback) {
-                var apiUrl = "http://127.0.0.1:8000/stock_data";  // Change to live API when deployed
+                var apiUrl = "http://10.100.121.136:8000/stock_data";  // Change to live API when deployed
 
                 fetch(apiUrl)
                     .then(response => response.json())
