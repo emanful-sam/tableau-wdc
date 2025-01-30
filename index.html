@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://connectors.tableau.com/libs/tableauwdc-2.3.latest.js"></script>
+    <script>
+        (function() {
+            var myConnector = tableau.makeConnector();
+
+            myConnector.getSchema = function(schemaCallback) {
+                var cols = [
+                    { id: "symbol", alias: "Stock Symbol", dataType: tableau.dataTypeEnum.string },
+                    { id: "timestamp", alias: "Timestamp", dataType: tableau.dataTypeEnum.datetime },
+                    { id: "open", alias: "Open Price", dataType: tableau.dataTypeEnum.float },
+                    { id: "high", alias: "High Price", dataType: tableau.dataTypeEnum.float },
+                    { id: "low", alias: "Low Price", dataType: tableau.dataTypeEnum.float },
+                    { id: "close", alias: "Close Price", dataType: tableau.dataTypeEnum.float },
+                    { id: "volume", alias: "Volume", dataType: tableau.dataTypeEnum.int }
+                ];
+
+                var tableSchema = {
+                    id: "NaturalGasFutures",
+                    alias: "Natural Gas Futures (Real-Time)",
+                    columns: cols
+                };
+
+                schemaCallback([tableSchema]);
+            };
+
+            myConnector.getData = function(table, doneCallback) {
+                var apiUrl = "http://127.0.0.1:8000/stock_data";  // Change to live API when deployed
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        table.appendRows(data);
+                        doneCallback();
+                    })
+                    .catch(error => console.error("Error fetching data:", error));
+            };
+
+            tableau.registerConnector(myConnector);
+        })();
+
+        function connect() {
+            tableau.connectionName = "Natural Gas Futures Data";
+            tableau.submit();
+        }
+    </script>
+</head>
+<body>
+    <h1>Tableau Web Data Connector (WDC) - Natural Gas Futures</h1>
+    <button onclick="connect()">Connect to Data</button>
+</body>
+</html>
