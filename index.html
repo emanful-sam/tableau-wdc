@@ -27,7 +27,8 @@
             };
 
             myConnector.getData = function(table, doneCallback) {
-                var apiUrl = "http://10.100.121.136:8000/stock_data";  // Change to live API when deployed
+                var apiUrl = "http://10.100.121.136:8000/stock_data
+                // ";  // Change to live API when deployed
 
                 fetch(apiUrl)
                     .then(response => response.json())
@@ -42,8 +43,11 @@
         })();
 
         function connect() {
+            alert("Connect Data button clicked!");  // Step 1: Show an alert to confirm click
             tableau.connectionName = "Natural Gas Futures Data";
+            alert("Tableau connection name set!");  // Step 2: Confirm Tableau is registering
             tableau.submit();
+            alert("Tableau submit triggered!");  // Step 3: Confirm Tableau submit is running
         }
     </script>
 </head>
